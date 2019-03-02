@@ -3,10 +3,6 @@ import {connect} from "react-redux";
 import {signIn, signOut} from "../actions";
 
 class GoogleAuth extends React.Component {
-  state = {isSignedIn: null};
-  // null bec we don't know whether the user is
-  // signed in or not signed in when our app first loads
-
   componentDidMount = () => {
     window.gapi.load("client:auth2", () => {
       window.gapi.client
@@ -16,14 +12,17 @@ class GoogleAuth extends React.Component {
           scope: "email"
         })
         .then(() => {
+          // when we finish initializing our library
+          // 1. assign aut instance to this.auth
           this.auth = window.gapi.auth2.getAuthInstance();
 
           // this.setState({isSignedIn: this.auth.isSignedIn.get()})
           // to get auth status when we first initialize our library
           // and update the auth state to be w/e its value should be
-          this.onAuthChange();
-          console.log(this.state);
 
+          // 2. immediately update auth state inside our redux store
+          this.onAuthChange(this.auth.isSignedIn.get());
+          // 3. sit and wait for auth status to change at some point in the future
           this.auth.isSignedIn.listen(this.onAuthChange);
         });
     });
@@ -48,9 +47,9 @@ class GoogleAuth extends React.Component {
   };
 
   renderAuthButton() {
-    if (this.state.isSignedIn === null) {
+    if (this.props.isSignedIn === null) {
       return null;
-    } else if (this.state.isSignedIn) {
+    } else if (this.props.isSignedIn) {
       return (
         <button className="ui red google button" onClick={this.onSignOutClick}>
           <i className="google icon" />
@@ -72,8 +71,12 @@ class GoogleAuth extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {isSignedIn: state.isSignedIn};
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   {signIn, signOut}
 )(GoogleAuth);
 
