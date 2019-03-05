@@ -26,9 +26,23 @@ class StreamCreate extends React.Component {
     );
   }
 
+  // onSubmit(event) {
+  onSubmit(formValues) {
+    // this is a helper method
+    // can be used to send data to an API, validate, etc
+    // this.props.handleSubmit() automatically takes in
+    // the event object and uses preventDefault
+    console.log(formValues);
+    //
+  }
+
   render() {
     return (
-      <form className="ui form">
+      <form
+        className="ui form"
+        // this.props.handleSubmit is provided by Redux Form
+        onSubmit={this.props.handleSubmit(this.onSubmit)}
+      >
         <Field name="title" component={this.renderInput} label="Enter Title" />
         {/* Field is any type of input. name prop required */}
         {/* 
@@ -44,6 +58,7 @@ class StreamCreate extends React.Component {
           component={this.renderInput}
           label="Enter Description"
         />
+        <button className="ui button primary">Submit</button>
       </form>
     );
   }
