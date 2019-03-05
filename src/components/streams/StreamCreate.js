@@ -5,28 +5,31 @@ import {Field, reduxForm} from "redux-form";
 // reduxForm is a function, same functionality as connect() function
 class StreamCreate extends React.Component {
   // renderInput(formProps) {
-  renderInput({input}) {
+  renderInput({input, label}) {
     // console.log(formProps);
 
     return (
-      <input
-        /* 
+      <div className="field">
+        <label>{label}</label>
+        <input
+          /* 
         type="text"
         onChange={formProps.input.onChange}
         value={formProps.input.value} 
         */
-        // Same as:
-        // {...formProps.input}
-        // Same as:
-        {...input}
-      />
+          // Same as:
+          // {...formProps.input}
+          // Same as:
+          {...input}
+        />
+      </div>
     );
   }
 
   render() {
     return (
-      <form>
-        <Field name="title" component={this.renderInput} />
+      <form className="ui form">
+        <Field name="title" component={this.renderInput} label="Enter Title" />
         {/* Field is any type of input. name prop required */}
         {/* 
           Field is just a component, and not resposible for getting anything on the screen 
@@ -36,7 +39,11 @@ class StreamCreate extends React.Component {
             - They need to return some element that will be shown on he screen
           It's up to us to show the component and customize it in some fashion
         */}
-        <Field name="description" component={this.renderInput} />
+        <Field
+          name="description"
+          component={this.renderInput}
+          label="Enter Description"
+        />
       </form>
     );
   }
