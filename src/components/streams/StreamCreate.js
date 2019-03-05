@@ -4,13 +4,24 @@ import {Field, reduxForm} from "redux-form";
 // Field is a React component
 // reduxForm is a function, same functionality as connect() function
 class StreamCreate extends React.Component {
+  renderError = ({error, touched}) => {
+    if (touched && error) {
+      return (
+        <div className="ui error message">
+          <div className="header">{error}</div>
+        </div>
+      );
+    }
+  };
+
   // renderInput(formProps) {
-  renderInput({input, label, meta}) {
+  renderInput = ({input, label, meta}) => {
     // console.log(formProps);
-    console.log(meta);
+    // console.log(meta);
+    const className = `field ${meta.error && meta.touched ? "error" : ""}`;
 
     return (
-      <div className="field">
+      <div className={className}>
         <label>{label}</label>
         <input
           /* 
@@ -22,11 +33,13 @@ class StreamCreate extends React.Component {
           // {...formProps.input}
           // Same as:
           {...input}
+          autoComplete="off"
         />
-        <div>{meta.error}</div>
+        {/* <div>{meta.error}</div> - instead of writing logic here, define a helper method*/}
+        {this.renderError(meta)}
       </div>
     );
-  }
+  };
 
   // onSubmit(event) {
   onSubmit(formValues) {
@@ -41,7 +54,7 @@ class StreamCreate extends React.Component {
   render() {
     return (
       <form
-        className="ui form"
+        className="ui form error"
         // this.props.handleSubmit is provided by Redux Form
         onSubmit={this.props.handleSubmit(this.onSubmit)}
       >
