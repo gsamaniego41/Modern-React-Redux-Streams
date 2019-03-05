@@ -64,6 +64,22 @@ class StreamCreate extends React.Component {
   }
 }
 
+const validate = formValues => {
+  // Doesn't come w/ Redux-Form we have to create it
+  // formValues is going to contain all the diff
+  // values that exist inside of our form
+
+  const errors = {};
+  // Did the user enter valid inputs?
+  if (!formValues.title) {
+    // only run if the user did not enter a title
+    errors.title = "You must enter a title";
+  }
+  if (!formValues.description) {
+    errors.description = "You must enter a description";
+  }
+};
+
 export default reduxForm({
   //unlike connect(), reduxForm receives a single object = configuration
   form: "streamCreate" // value is what the purpose of the form is
